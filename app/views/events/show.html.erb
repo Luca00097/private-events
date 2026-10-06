@@ -1,0 +1,5 @@
+<h1><%= @event.title %></h1>
+<p><%= @event.description %></p>
+<p>When: <%= @event.date %></p>
+<p>Where: <%= @event.location %></p>
+<p>Hosted by: <%= link_to @event.creator.email, user_path(@event.creator) %></p>

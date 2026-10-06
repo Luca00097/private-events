@@ -1,5 +1,7 @@
 <h1>Upcoming Gatherings</h1>
 
+<%= link_to "New Event", new_event_path %>
+
 <% @events.each do |event| %>
   <p><%= event.title %> — <%= event.location %></p>
 <% end %>
