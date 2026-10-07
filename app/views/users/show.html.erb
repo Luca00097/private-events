@@ -9,3 +9,15 @@
 <% else %>
   <p>No events yet.</p>
 <% end %>
+
+<h2>Events attending</h2>
+
+<% if @user.attended_events.any? %>
+  <ul>
+    <% @user.attended_events.each do |event| %>
+      <li><%= link_to event.title, event_path(event) %> — <%= event.location %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Not attending any events yet.</p>
+<% end %>

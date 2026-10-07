@@ -3,6 +3,19 @@
 <p>When: <%= @event.date %></p>
 <p>Where: <%= @event.location %></p>
 <p>Hosted by: <%= link_to @event.creator.email, user_path(@event.creator) %></p>
+
+<h2>Attendees</h2>
+
+<% if @event.attendees.any? %>
+  <ul>
+    <% @event.attendees.each do |attendee| %>
+      <li><%= link_to attendee.email, user_path(attendee) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No one is attending yet.</p>
+<% end %>
+
 <% if user_signed_in? %>
   <% if @event.attendees.include?(current_user) %>
     <p>You're attending this event.</p>
@@ -10,3 +23,4 @@
     <%= button_to "Attend", event_attendances_path(@event) %>
   <% end %>
 <% end %>
+
