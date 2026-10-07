@@ -1,65 +1,83 @@
-<h1><%= @event.title %></h1>
-<p><%= @event.description %></p>
-<p>When: <%= @event.date %></p>
-<p>Where: <%= @event.location %></p>
-<p>Visibility: <%= @event.is_private? ? "Private" : "Public" %></p>
-<p>Hosted by: <%= link_to @event.creator.email, user_path(@event.creator) %></p>
+<article class="detail">
+  <div class="card-header">
+    <h1><%= @event.title %></h1>
+    <% if @event.is_private? %>
+      <span class="badge">Private</span>
+    <% else %>
+      <span class="badge badge-public">Public</span>
+    <% end %>
+  </div>
 
-<% if user_signed_in? && current_user == @event.creator %>
+  <p class="meta">
+    <%= @event.date.strftime("%A, %B %-d · %-I:%M %p") %> · <%= @event.location %>
+  </p>
+  <p class="meta">Hosted by <%= link_to @event.creator.email, user_path(@event.creator) %></p>
+
+  <% if @event.description.present? %>
+    <p class="description"><%= @event.description %></p>
+  <% end %>
+</article>
+
+<% if user_signed_in? %>
   <div class="actions-row">
-    <%= link_to "Edit event", edit_event_path(@event), class: "btn btn-secondary" %>
-    <%= button_to "Delete event", event_path(@event), method: :delete,
-          class: "btn btn-danger",
-          form: { data: { turbo_confirm: "Delete this event? This can't be undone." } } %>
+    <% attendance = current_user.attendances.find_by(attended_event: @event) %>
+
+    <% if attendance %>
+      <span class="meta">You're attending this event.</span>
+      <%= button_to "Leave event", event_attendance_path(@event, attendance), method: :delete, class: "btn btn-secondary" %>
+    <% else %>
+      <%= button_to "Attend", event_attendances_path(@event) %>
+    <% end %>
+
+    <% if current_user == @event.creator %>
+      <%= link_to "Edit event", edit_event_path(@event), class: "btn btn-secondary" %>
+      <%= button_to "Delete event", event_path(@event), method: :delete,
+            class: "btn btn-danger",
+            form: { data: { turbo_confirm: "Delete this event? This can't be undone." } } %>
+    <% end %>
   </div>
 <% end %>
 
-<h2>Attendees</h2>
-
-<% if @event.attendees.any? %>
-  <ul>
-    <% @event.attendees.each do |attendee| %>
-      <li><%= link_to attendee.email, user_path(attendee) %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No one is attending yet.</p>
-<% end %>
-
-<% if user_signed_in? %>
-  <% attendance = current_user.attendances.find_by(attended_event: @event) %>
-
-  <% if attendance %>
-    <p>You're attending this event.</p>
-    <%= button_to "Leave event", event_attendance_path(@event, attendance), method: :delete, class: "btn btn-secondary" %>
-  <% else %>
-    <%= button_to "Attend", event_attendances_path(@event), class: "btn btn-secondary" %>
-  <% end %>
-<% end %>
-
-<% if user_signed_in? && current_user == @event.creator %>
-  <h2>Invite someone</h2>
-
-  <% invitable = User.where.not(id: [@event.creator_id] + @event.invitee_ids) %>
-
-  <% if invitable.any? %>
-    <%= form_with url: event_invitations_path(@event) do |form| %>
-      <%= form.label :invitee_id, "Choose a user" %>
-      <%= form.collection_select :invitee_id, invitable, :id, :email %>
-      <%= form.submit "Send invitation" %>
-    <% end %>
-  <% else %>
-    <p>No one left to invite.</p>
-  <% end %>
-
-  <h3>Invited</h3>
-  <% if @event.invitees.any? %>
-    <ul>
-      <% @event.invitees.each do |invitee| %>
-        <li><%= invitee.email %></li>
+<section>
+  <h2>Attendees</h2>
+  <% if @event.attendees.any? %>
+    <ul class="people">
+      <% @event.attendees.each do |attendee| %>
+        <li><%= link_to attendee.email, user_path(attendee) %></li>
       <% end %>
     </ul>
   <% else %>
-    <p>No invitations sent yet.</p>
+    <p class="empty">No one is attending yet.</p>
   <% end %>
+</section>
+
+<% if user_signed_in? && current_user == @event.creator %>
+  <section>
+    <h2>Invite someone</h2>
+
+    <% invitable = User.where.not(id: [@event.creator_id] + @event.invitee_ids) %>
+
+    <% if invitable.any? %>
+      <%= form_with url: event_invitations_path(@event) do |form| %>
+        <div class="field">
+          <%= form.label :invitee_id, "Choose a user" %>
+          <%= form.collection_select :invitee_id, invitable, :id, :email %>
+        </div>
+        <%= form.submit "Send invitation" %>
+      <% end %>
+    <% else %>
+      <p class="empty">No one left to invite.</p>
+    <% end %>
+
+    <h2>Invited</h2>
+    <% if @event.invitees.any? %>
+      <ul class="people">
+        <% @event.invitees.each do |invitee| %>
+          <li><%= invitee.email %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="empty">No invitations sent yet.</p>
+    <% end %>
+  </section>
 <% end %>

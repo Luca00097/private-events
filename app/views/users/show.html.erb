@@ -1,36 +1,31 @@
 <h1><%= @user.email %></h1>
 
-<h2>Events created</h2>
-
-<% if @events.any? %>
-  <% @events.each do |event| %>
-    <p><%= event.title %> — <%= event.location %></p>
+<section>
+  <h2>Events created</h2>
+  <% if @events.any? %>
+    <%= render partial: "events/event", collection: @events %>
+  <% else %>
+    <p class="empty">No events yet.</p>
   <% end %>
-<% else %>
-  <p>No events yet.</p>
-<% end %>
+</section>
 
 <% upcoming = @user.attended_events.visible_to(current_user).upcoming.order("events.date ASC") %>
 <% past = @user.attended_events.visible_to(current_user).past.order("events.date DESC") %>
 
-<h2>Upcoming events</h2>
-<% if upcoming.any? %>
-  <ul>
-    <% upcoming.each do |event| %>
-      <li><%= link_to event.title, event_path(event) %> — <%= event.date %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No upcoming events.</p>
-<% end %>
+<section>
+  <h2>Attending: upcoming</h2>
+  <% if upcoming.any? %>
+    <%= render partial: "events/event", collection: upcoming %>
+  <% else %>
+    <p class="empty">No upcoming events.</p>
+  <% end %>
+</section>
 
-<h2>Past events</h2>
-<% if past.any? %>
-  <ul>
-    <% past.each do |event| %>
-      <li><%= link_to event.title, event_path(event) %> — <%= event.date %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No past events.</p>
-<% end %>
+<section>
+  <h2>Attending: past</h2>
+  <% if past.any? %>
+    <%= render partial: "events/event", collection: past %>
+  <% else %>
+    <p class="empty">No past events.</p>
+  <% end %>
+</section>

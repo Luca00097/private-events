@@ -240,3 +240,60 @@ nav .btn {
   border-radius: var(--radius);
   margin-bottom: 1rem;
 }
+
+.detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.detail h1 {
+  margin: 0;
+}
+
+.detail .meta {
+  margin: 0.5rem 0 0;
+}
+
+.description {
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  white-space: pre-line;
+}
+
+.badge-public {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.people {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.people li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.people li:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 600px) {
+  nav {
+    gap: 0.5rem;
+  }
+
+  nav span {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .actions-row {
+    flex-wrap: wrap;
+  }
+}
