@@ -4,4 +4,12 @@ class Event < ApplicationRecord
   has_many :attendees, through: :attendances
 
   validates :title, :date, :location, presence: true
+
+  def self.past
+    where("events.date < ?", Time.current)
+  end
+
+  def self.upcoming
+    where("events.date >= ?", Time.current)
+  end
 end
