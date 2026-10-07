@@ -10,14 +10,27 @@
   <p>No events yet.</p>
 <% end %>
 
-<h2>Events attending</h2>
+<% upcoming = @user.attended_events.where("events.date >= ?", Time.current).order("events.date ASC") %>
+<% past = @user.attended_events.where("events.date < ?", Time.current).order("events.date DESC") %>
 
-<% if @user.attended_events.any? %>
+<h2>Upcoming events</h2>
+<% if upcoming.any? %>
   <ul>
-    <% @user.attended_events.each do |event| %>
-      <li><%= link_to event.title, event_path(event) %> — <%= event.location %></li>
+    <% upcoming.each do |event| %>
+      <li><%= link_to event.title, event_path(event) %> — <%= event.date %></li>
     <% end %>
   </ul>
 <% else %>
-  <p>Not attending any events yet.</p>
+  <p>No upcoming events.</p>
+<% end %>
+
+<h2>Past events</h2>
+<% if past.any? %>
+  <ul>
+    <% past.each do |event| %>
+      <li><%= link_to event.title, event_path(event) %> — <%= event.date %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No past events.</p>
 <% end %>
