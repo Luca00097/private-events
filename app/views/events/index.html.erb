@@ -1,7 +1,19 @@
 <h1>Upcoming Gatherings</h1>
 
-<%= link_to "New Event", new_event_path %>
+<h2>Upcoming events</h2>
+<% if @upcoming_events.any? %>
+  <% @upcoming_events.each do |event| %>
+    <p><%= link_to event.title, event_path(event) %> — <%= event.location %>, <%= event.date %></p>
+  <% end %>
+<% else %>
+  <p>No upcoming events.</p>
+<% end %>
 
-<% @events.each do |event| %>
-  <p><%= link_to event.title, event_path(event) %> — <%= event.location %></p>
+<h2>Past events</h2>
+<% if @past_events.any? %>
+  <% @past_events.each do |event| %>
+    <p><%= link_to event.title, event_path(event) %> — <%= event.location %>, <%= event.date %></p>
+  <% end %>
+<% else %>
+  <p>No past events.</p>
 <% end %>
