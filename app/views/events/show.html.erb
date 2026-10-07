@@ -23,8 +23,11 @@
 <% end %>
 
 <% if user_signed_in? %>
-  <% if @event.attendees.include?(current_user) %>
+  <% attendance = current_user.attendances.find_by(attended_event: @event) %>
+
+  <% if attendance %>
     <p>You're attending this event.</p>
+    <%= button_to "Leave event", event_attendance_path(@event, attendance), method: :delete %>
   <% else %>
     <%= button_to "Attend", event_attendances_path(@event) %>
   <% end %>

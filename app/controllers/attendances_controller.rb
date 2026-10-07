@@ -16,4 +16,10 @@ class AttendancesController < ApplicationController
       redirect_to event, alert: "Could not save your attendance."
     end
   end
+ 
+  def destroy
+    attendance = current_user.attendances.find(params[:id])
+    attendance.destroy
+    redirect_to event_path(params[:event_id]), notice: "You've left this event.", status: :see_other
+  end
 end
