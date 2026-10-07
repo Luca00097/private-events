@@ -1,33 +1,33 @@
 <%= form_with model: event do |form| %>
   <% if event.errors.any? %>
-    <ul>
+    <ul class="errors">
       <% event.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>
   <% end %>
 
-  <div>
+  <div class="field">
     <%= form.label :title %>
     <%= form.text_field :title %>
   </div>
 
-  <div>
+  <div class="field">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, rows: 4 %>
   </div>
 
-  <div>
+  <div class="field">
     <%= form.label :date %>
     <%= form.datetime_field :date %>
   </div>
 
-  <div>
+  <div class="field">
     <%= form.label :location %>
     <%= form.text_field :location %>
   </div>
 
-  <div>
+  <div class="field checkbox">
     <%= form.check_box :is_private %>
     <%= form.label :is_private, "Private event (only you and invited people can see it)" %>
   </div>
