@@ -10,8 +10,8 @@
   <p>No events yet.</p>
 <% end %>
 
-<% upcoming = @user.attended_events.upcoming.order("events.date ASC") %>
-<% past = @user.attended_events.past.order("events.date DESC") %>
+<% upcoming = @user.attended_events.visible_to(current_user).upcoming.order("events.date ASC") %>
+<% past = @user.attended_events.visible_to(current_user).past.order("events.date DESC") %>
 
 <h2>Upcoming events</h2>
 <% if upcoming.any? %>
