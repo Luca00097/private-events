@@ -27,5 +27,10 @@
     <%= form.text_field :location %>
   </div>
 
+  <div>
+    <%= form.check_box :is_private %>
+    <%= form.label :is_private, "Private event (only you and invited people can see it)" %>
+  </div>
+
   <%= form.submit %>
 <% end %>

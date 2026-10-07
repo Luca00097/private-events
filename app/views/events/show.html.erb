@@ -2,6 +2,7 @@
 <p><%= @event.description %></p>
 <p>When: <%= @event.date %></p>
 <p>Where: <%= @event.location %></p>
+<p>Visibility: <%= @event.is_private? ? "Private" : "Public" %></p>
 <p>Hosted by: <%= link_to @event.creator.email, user_path(@event.creator) %></p>
 
 <% if user_signed_in? && current_user == @event.creator %>
