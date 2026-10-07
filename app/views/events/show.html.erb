@@ -24,3 +24,29 @@
   <% end %>
 <% end %>
 
+<% if user_signed_in? && current_user == @event.creator %>
+  <h2>Invite someone</h2>
+
+  <% invitable = User.where.not(id: [@event.creator_id] + @event.invitee_ids) %>
+
+  <% if invitable.any? %>
+    <%= form_with url: event_invitations_path(@event) do |form| %>
+      <%= form.label :invitee_id, "Choose a user" %>
+      <%= form.collection_select :invitee_id, invitable, :id, :email %>
+      <%= form.submit "Send invitation" %>
+    <% end %>
+  <% else %>
+    <p>No one left to invite.</p>
+  <% end %>
+
+  <h3>Invited</h3>
+  <% if @event.invitees.any? %>
+    <ul>
+      <% @event.invitees.each do |invitee| %>
+        <li><%= invitee.email %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No invitations sent yet.</p>
+  <% end %>
+<% end %>
