@@ -4,6 +4,12 @@
 <p>Where: <%= @event.location %></p>
 <p>Hosted by: <%= link_to @event.creator.email, user_path(@event.creator) %></p>
 
+<% if user_signed_in? && current_user == @event.creator %>
+  <%= link_to "Edit event", edit_event_path(@event) %>
+  <%= button_to "Delete event", event_path(@event), method: :delete,
+        form: { data: { turbo_confirm: "Delete this event? This can't be undone." } } %>
+<% end %>
+
 <h2>Attendees</h2>
 
 <% if @event.attendees.any? %>
