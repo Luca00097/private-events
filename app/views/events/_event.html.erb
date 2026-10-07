@@ -1,0 +1,11 @@
+<article class="card">
+  <div class="card-header">
+    <h3><%= link_to event.title, event_path(event) %></h3>
+    <% if event.is_private? %>
+      <span class="badge">Private</span>
+    <% end %>
+  </div>
+  <p class="meta">
+    <%= event.date.strftime("%a, %b %-d · %-I:%M %p") %> · <%= event.location %>
+  </p>
+</article>

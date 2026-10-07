@@ -1,19 +1,19 @@
-<h1>Upcoming Gatherings</h1>
+<h1>Events</h1>
 
-<h2>Upcoming events</h2>
-<% if @upcoming_events.any? %>
-  <% @upcoming_events.each do |event| %>
-    <p><%= link_to event.title, event_path(event) %> — <%= event.location %>, <%= event.date %></p>
+<section>
+  <h2>Upcoming</h2>
+  <% if @upcoming_events.any? %>
+    <%= render partial: "event", collection: @upcoming_events %>
+  <% else %>
+    <p class="empty">No upcoming events.</p>
   <% end %>
-<% else %>
-  <p>No upcoming events.</p>
-<% end %>
+</section>
 
-<h2>Past events</h2>
-<% if @past_events.any? %>
-  <% @past_events.each do |event| %>
-    <p><%= link_to event.title, event_path(event) %> — <%= event.location %>, <%= event.date %></p>
+<section>
+  <h2>Past</h2>
+  <% if @past_events.any? %>
+    <%= render partial: "event", collection: @past_events %>
+  <% else %>
+    <p class="empty">No past events.</p>
   <% end %>
-<% else %>
-  <p>No past events.</p>
-<% end %>
+</section>
