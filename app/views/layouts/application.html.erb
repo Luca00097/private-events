@@ -23,11 +23,14 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= render "layouts/navigation" %>
+<body>
+  <%= render "layouts/navigation" %>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+  <main class="container">
+    <% if notice %><p class="flash notice"><%= notice %></p><% end %>
+    <% if alert %><p class="flash alert"><%= alert %></p><% end %>
+
     <%= yield %>
-  </body>
+  </main>
+</body>
 </html>
